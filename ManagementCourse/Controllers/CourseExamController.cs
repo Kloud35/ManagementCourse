@@ -4,6 +4,7 @@ using ManagementCourse.Models.ViewModel;
 using ManagementCourse.Reposiory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.EventSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,8 @@ namespace ManagementCourse.Controllers
         IGenericRepository<CourseExamResult> courseExamResultRepo = new GenericRepository<CourseExamResult>();
         IGenericRepository<CourseRightAnswer> courseRightAnswerRepository = new GenericRepository<CourseRightAnswer>();
         IGenericRepository<CourseQuestion> courseQuestionRepository = new GenericRepository<CourseQuestion>();
-
+        IGenericRepository<CourseLesson> courseLessonRepository = new GenericRepository<CourseLesson>();
+        IGenericRepository<CourseLessonHistory> courseLessonHistoryRepository = new GenericRepository<CourseLessonHistory>();
         public CourseExamController(CourseExamRepository courseExamRepository)
         {
             _courseExamRepo = courseExamRepository;
@@ -25,15 +27,26 @@ namespace ManagementCourse.Controllers
         public IActionResult Index(int courseId)
         {
 
+
             CourseExam courseExam = _courseExamRepo.GetCourseExam(courseId);
 
             var employeeID = HttpContext.Session.GetInt32("employeeid");
+
+            var listLesson = courseLessonRepository.GetAll().Where(p => p.CourseId == courseId).ToList();
+            var listLessonHistory = courseLessonHistoryRepository.GetAll().Where(p=>p.EmployeeId == employeeID && p.Status == 1).ToList();
+            var lessonIds = listLesson.Select(l => l.Id).ToList();
+            var matchingLessons = listLessonHistory.Where(h => lessonIds.Contains((int)h.LessonId)).ToList();
+            bool hasMatchingLessons = matchingLessons.Count == listLesson.Count;
+            if (!hasMatchingLessons)
+            {
+                return RedirectToAction("Index", "Lesson", new { courseId = courseId, lessonId = lessonIds[0] });
+            }
             var model = new CourseExamViewModel
             {
                 CourseExam = courseExam,
                 CourseQuestion = _courseExamRepo.GetCourseQuestion(courseExam.ID).OrderBy(p => p.Stt).ToList(),
                 CourseAnswer = _courseExamRepo.GetCourseAnswer(),
-                CourseExamResult = courseExamResultRepo.GetAll().OrderByDescending(p=>p.CreatedDate).FirstOrDefault(p => p.CourseExamId == courseExam.ID && p.EmployeeId == employeeID)
+                CourseExamResult = courseExamResultRepo.GetAll().OrderByDescending(p => p.CreatedDate).FirstOrDefault(p => p.CourseExamId == courseExam.ID && p.EmployeeId == employeeID)
             };
             return View(model);
         }
@@ -143,7 +156,7 @@ namespace ManagementCourse.Controllers
         }
         public IActionResult RetakeExam(int resultID)
         {
-           
+
             // Delete existing CourseExamResult record
             var existingResult = courseExamResultRepo.GetByID(resultID);
             var courseExamID = existingResult.CourseExamId;
