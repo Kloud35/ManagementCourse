@@ -1,0 +1,50 @@
+﻿@{
+    string bglesson = "background-color:#696cff; color:#fff";
+}
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme ">
+    <div class="app-brand demo">
+        <a asp-controller="Home" asp-action="Index" class="app-brand-link">
+            <!-- Logo để đây -->
+            <img src="~/assets/img/rtc_logo.jpg" alt="" width="45">
+            <span class="app-brand-text demo menu-text fw-bolder text-uppercase ms-2">RTC</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+    <ul class="menu-inner py-1" id="menu_inner">
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Khóa học</span>
+        </li>
+        @foreach (var item in ViewBag.ListDepartment)
+        {
+            <li class="menu-item open">
+
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                    <div >@item.Name</div>
+                </a>
+                <ul class="menu-sub">
+                    @foreach (var item2 in ViewBag.ListcourseCatalog)
+                    {
+
+                        if (item2.DepartmentId == item.Id)
+                        {
+                            <li class="menu-item ">
+                                <a class="menu-link accesskey" asp-controller="Home" asp-action="Index" asp-route-id="@item2.Id">
+                                    <div>@item2.Name</div>
+                                </a>
+                                
+                            </li>
+                        }
+
+                    }
+                </ul>
+            </li>
+        }
+
+    </ul>
+</aside>

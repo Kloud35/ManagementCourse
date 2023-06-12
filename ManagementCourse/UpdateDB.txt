@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext "server=DESKTOP-ABEN704\SQLEXPRESS;database=RTC;User Id = sa; Password=1;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -ContextDir Models/Context -Table Department,Course,CourseCatalog,CourseLesson,Users,CourseFile,CourseLessonHistory,CourseQuestion,CourseExam,CourseExamResult,CourseAnswers,CourseExamResultDetail,CourseRightAnswers -Force

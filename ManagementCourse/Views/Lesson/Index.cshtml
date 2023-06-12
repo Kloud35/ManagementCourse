@@ -1,0 +1,181 @@
+﻿@using ManagementCourse.Models.ViewModel;
+@model CourseLessonViewModel
+@{
+    string bglesson = "background-color:#EFE1CE !important;";
+
+    int courseID = (int)ViewBag.CourseID;
+    int courseExamID = (int)ViewBag.CourseExamID;
+    int employeeID = (int)ViewBag.EmployeeID;
+}
+<style>
+    #group-li:hover {
+        background-color: #EFE1CE !important;
+    }
+
+    .group-ul {
+        height: 734px; /* Thiết lập chiều cao của phần muốn cuộn */
+        overflow: auto; /* Thiết lập cho phần muốn cuộn có thể cuộn */
+    }
+        /* Thiết lập CSS cho thanh cuộn */
+        .group-ul::-webkit-scrollbar {
+            width: 10px; /* Chiều rộng thanh cuộn */
+        }
+
+        .group-ul::-webkit-scrollbar-track {
+            background-color: #f2f2f2; /* Màu nền của thanh cuộn */
+        }
+
+        .group-ul::-webkit-scrollbar-thumb {
+            background-color: #aaa; /* Màu của thanh cuộn */
+            border-radius: 5px; /* Đường viền của thanh cuộn */
+        }
+
+            .group-ul::-webkit-scrollbar-thumb:hover {
+                background-color: #999; /* Màu của thanh cuộn khi di chuột vào */
+            }
+</style>
+<div class="row" style="color:#000000 !important">
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <input type="hidden" id="id_lesson" value="@Model.Id" />
+                <h3 class="card-title ">
+
+                    @ViewBag?.NameCourse
+
+                </h3>
+                <div class="row">
+                    <div class="col-md-10">
+                        @Model?.LessonTitle
+                    </div>
+
+                    <div class="form-check-lg form-switch col-md-2">
+
+                        <label class="form-check-label" id="title-check-less">
+                            @{
+                                string temp = Model.Status == 1 ? "Đã học" : "Chưa học";
+                            } @temp
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <iframe width="100%" height="700px" src="@Model.VideoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title ">
+                    <i class='bx bx-list-ul'></i>DANH SÁCH BÀI HỌC
+                </h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group group-ul">
+                    @if (ViewBag.ListLesson != null)
+                    {
+                        @foreach (var item in ViewBag.ListLesson)
+                        {
+
+                            string check = item.Status == 1 ? "checked" : "";
+
+                            <li class="list-group-item text-dark d-flex justify-content-between align-items-between mt-1" id="group-li" style="@if(item.Id == Model.Id){
+                    @bglesson
+;}">
+
+                                <a asp-controller="Lesson" asp-action="Index" asp-route-courseId="@item.CourseId" asp-route-lessionId="@item.Id">
+                                    <span class="badge bg-info">@item.Stt</span>
+                                    <span class="text-dark" style="@if(item.Id == Model.Id){
+                            @bglesson
+;}">
+                                        @item.LessonTitle
+                                    </span>
+                                </a>
+                                <div class="form-check form-switch  ">
+                                    <input class="form-check-input  " type="checkbox" role="switch" onclick="return CheckHistoryLess(event,'@item.Id')" id="historyCheckbox_@item.Id" @check>
+
+                                </div>
+
+                            </li>
+                        }
+                    }
+
+                    <li class="list-group-item text-dark d-flex justify-content-between align-items-between mt-1" id="group-li">
+                        <a asp-controller="CourseExam" asp-action="Index" asp-route-courseId="@courseID" onclick="GetExamResult('@courseID', '@employeeID', '@courseExamID')">
+                            <span class="text-ark">
+                                Bài kiểm tra
+                            </span>
+                        </a>
+
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row mt-2">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body text-dark">
+                @Html.Raw(Model.LessonContent)
+            </div>
+            <div class="card-footer text-dark">
+
+                @if (Model.UrlPdf != "")
+                {
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            FILE PDF
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                XEM FILE
+                            </button>
+                        </div>
+                    </div>
+
+                }
+
+                @if (ViewBag.FileCourse != null)
+                {
+                    <p>Tài liệu đính kèm: </p>
+                    @foreach (var item in ViewBag.FileCourse)
+                    {
+                        <p>  <a class="text-primary"> @item.NameFile</a> <a class="btn btn-success btn-sm " asp-action="GetBlobDownload" asp-route-file_name="@item.ID" id="download_file"> Tải File</a></p>
+
+                    }
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:1400px">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h5 class="modal-title text-white" id="titlePDF">File PDF của   @ViewBag?.NameCourse</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <iframe src='/testfile/@Model.UrlPdf'
+                        width="100%"
+                        height="800">
+                </iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/js/lesson_index.js" asp-append-version="true"></script>
