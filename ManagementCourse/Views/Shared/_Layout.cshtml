@@ -188,7 +188,7 @@
     <script src="~/js/common.js" asp-append-version="true"></script>
     <script src="~/js/home.js" asp-append-version="true"></script>
     
-
+    @await Component.InvokeAsync("Notyf")
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

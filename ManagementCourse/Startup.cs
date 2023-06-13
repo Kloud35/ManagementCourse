@@ -19,7 +19,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using AspNetCoreHero.ToastNotification.Extensions;
+using AspNetCoreHero.ToastNotification.Notyf;
 
 namespace ManagementCourse
 {
@@ -51,6 +54,20 @@ namespace ManagementCourse
             services.AddScoped<RTCContext>();
             services.AddScoped<CourseExamRepository>();
             services.AddScoped<GenericRepository<CourseExamResult>>();
+            services.AddScoped<GenericRepository<CourseExam>>();
+            services.AddScoped<GenericRepository<CourseRightAnswer>>();
+            services.AddScoped<GenericRepository<CourseExamResult>>();
+            services.AddScoped<GenericRepository<CourseQuestion>>();
+            services.AddScoped<GenericRepository<CourseLesson>>();
+            services.AddScoped<GenericRepository<CourseLessonHistory>>();
+            services.AddScoped<INotyfService, NotyfService>();
+            services.AddNotyf(config =>
+            {
+                config.DurationInSeconds = 3;
+                config.IsDismissable = true;
+                config.Position = NotyfPosition.TopRight;
+            });
+           
 
         }
 

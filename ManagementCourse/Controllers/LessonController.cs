@@ -1,4 +1,5 @@
-﻿using ManagementCourse.Common;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using ManagementCourse.Common;
 using ManagementCourse.Models;
 using ManagementCourse.Models.DTO;
 using ManagementCourse.Models.ViewModel;
@@ -26,13 +27,15 @@ namespace ManagementCourse.Controllers
         CourseLessonHistoryRepository _lessonHistoryRepo;
         GenericRepository<CourseExamResult> _cousrseExamResult = new GenericRepository<CourseExamResult>();
         GenericRepository<CourseExam> _cousrseExam = new GenericRepository<CourseExam>();
+        public INotyfService _notyfService { get; set; }
         public LessonController(LessonRepository lessonRepository, CourseRepository courseRepository,
-            FileCourseRepository fileCourseRepository, CourseLessonHistoryRepository lessonHistoryRepo)
+            FileCourseRepository fileCourseRepository, CourseLessonHistoryRepository lessonHistoryRepo, INotyfService notyfService)
         {
             _lessonRepo = lessonRepository;
             _courseRepo = courseRepository;
             _fileCourseRepo = fileCourseRepository;
             _lessonHistoryRepo = lessonHistoryRepo;
+            _notyfService = notyfService;
         }
 
         public IActionResult Index(int courseId, int lessionId)

@@ -1,4 +1,6 @@
-﻿using ManagementCourse.IReposiory;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AspNetCoreHero.ToastNotification.Notyf;
+using ManagementCourse.IReposiory;
 using ManagementCourse.Models;
 using ManagementCourse.Models.ViewModel;
 using ManagementCourse.Reposiory;
@@ -20,9 +22,11 @@ namespace ManagementCourse.Controllers
         IGenericRepository<CourseQuestion> courseQuestionRepository = new GenericRepository<CourseQuestion>();
         IGenericRepository<CourseLesson> courseLessonRepository = new GenericRepository<CourseLesson>();
         IGenericRepository<CourseLessonHistory> courseLessonHistoryRepository = new GenericRepository<CourseLessonHistory>();
-        public CourseExamController(CourseExamRepository courseExamRepository)
+        public INotyfService _notyfService { get; set; }
+        public CourseExamController(CourseExamRepository courseExamRepository, INotyfService notyfService)
         {
             _courseExamRepo = courseExamRepository;
+            _notyfService = notyfService;
         }
         public IActionResult Index(int courseId)
         {
@@ -39,6 +43,7 @@ namespace ManagementCourse.Controllers
             bool hasMatchingLessons = matchingLessons.Count == listLesson.Count;
             if (!hasMatchingLessons)
             {
+                _notyfService.Error("Bạn chưa học hết bài học");
                 return RedirectToAction("Index", "Lesson", new { courseId = courseId, lessonId = lessonIds[0] });
             }
             var model = new CourseExamViewModel
