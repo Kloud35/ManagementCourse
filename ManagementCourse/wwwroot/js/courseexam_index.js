@@ -27,17 +27,14 @@ $(document).ready(function () {
                 var percent = response.percent;
                 var resultHtml = `
                     <div class="card col-md-12">
-                        <div class="card-header">
-                            <h3 class="card-title">Kết quả thi</h3>
-                        </div>
-                        <div class="card-body">
-                            ${percent != null ?
-                        `<p>Tỉ lệ đúng: ${percent}%</p>` :
-                    `<h3>Số câu đúng: <span id="num-correct-answers">${response.totalCorrect}/${response.totalCorrect+response.totalIncorrect}</span></h3>`
-                    }
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" id="btn-restart-exam">Làm lại bài thi</button>
+                                          <div class="card-header">
+                                            <h3 class="card-title">Kết quả thi</h3>
+                                          </div>
+                                          <div class="card-body">
+                                            <h3>Số câu đúng: <span id="num-correct-answers">${response.totalCorrect}/${response.totalCorrect + response.totalInCorrect}</span></h3>
+                                          </div>
+                                      </div>
+                                    <button class="btn btn-primary mt-3" id="btn-restart-exam">Làm lại bài thi</button>
                 `;
 
                 // Clear the content within the row
@@ -51,7 +48,7 @@ $(document).ready(function () {
             console.log(xhr.responseText);
         }
     });
-    
+
     //Lấy ra câu hỏi
     function loadQuestions() {
         $.ajax({
@@ -78,11 +75,12 @@ $(document).ready(function () {
                     var shuffledAnswers = questionAnswers.sort(() => Math.random() - 0.5);
 
                     $.each(shuffledAnswers, function (answerIndex, answer) {
-                        questionHtml += `<div class="form-check form-check-inline">
+                        questionHtml += `
+                                        <div class="form-check form-check-inline">
                                         <input value="${answer.id}" id="answer-id-${answer.id}" style="display: none;">
                                         <input class="form-check-input" type="checkbox" name="question_${index}" id="q_${answer.id}" value="${answer.id}" data-id="${question.id}">
-                                        <label class="form-check-label" for="q_${answer.id}">${answer.answerText}</label>
-                                    </div>`;
+                                        <label class="form-check-label" for="q_${answer.id}">${answer.answerText}</label> 
+                                    </div><br>`;
                     });
 
                     questionHtml += '<hr/></div>';
@@ -102,6 +100,7 @@ $(document).ready(function () {
                     var questionNumberHtml = `<span class="question-number" data-question-index="${i}">${i + 1}</span>`;
                     questionNavigation.append(questionNumberHtml);
                 }
+                $('.question-number[data-question-index="0"]').addClass('current-question');
 
                 $(".question-number").css({
                     display: "inline-block",
@@ -123,18 +122,6 @@ $(document).ready(function () {
                     loadSelectedAnswers(currentQuestionIndex, resultID);
                 });
 
-                //$(".question-number").hover(
-                //    function () {
-                //        if (!$(this).hasClass("current-question")) {
-                //            $(this).css("background-color", "lime");
-                //        }
-                //    },
-                //    function () {
-                //        if (!$(this).hasClass("current-question")) {
-                //            $(this).css("background-color", "transparent");
-                //        }
-                //    }
-                //);
 
                 $('.question-number').click(function () {
                     var questionIndex = $(this).data('question-index');
@@ -152,7 +139,7 @@ $(document).ready(function () {
         $('.question[data-question-index="' + questionIndex + '"]').show();
     }
 
-    
+
     //Add màu cho mấy cai ô
     function updateQuestionView() {
         $('.question-number').removeClass('current-question');
@@ -275,20 +262,15 @@ $(document).ready(function () {
                     // Clear the content within the row
                     $(".row.mb-3").empty();
 
-                    var resultHtml = `
-                    <div class="card col-md-12">
-                        <div class="card-header">
-                            <h3 class="card-title">Kết quả thi</h3>
-                        </div>
-                        <div class="card-body">
-                            
-                           
-                            <h3>Số câu đúng: <span id="num-correct-answers">${numCorrectAnswers}/${numCorrectAnswers + numIncorrectAnswers}</span></h3>
-                       
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" id="btn-restart-exam">Làm lại bài thi</button>
-                `;
+                    var resultHtml = `<div class="card col-md-12">
+                                          <div class="card-header">
+                                            <h3 class="card-title">Kết quả thi</h3>
+                                          </div>
+                                          <div class="card-body">
+                                            <h3>Số câu đúng: <span id="num-correct-answers">${numCorrectAnswers}/${numCorrectAnswers + numIncorrectAnswers}</span></h3>
+                                          </div>
+                                      </div>
+                                    <button class="btn btn-primary mt-3" id="btn-restart-exam">Làm lại bài thi</button>`;
                     $(".row.mb-3").html(resultHtml);
 
                     console.log(response);

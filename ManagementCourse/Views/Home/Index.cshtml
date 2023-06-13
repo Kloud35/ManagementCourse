@@ -4,44 +4,39 @@
     ViewData["Title"] = "Home";
 }
 <style>
-    .swal2-container{
-        z-index:2000 !important;
+    .swal2-container {
+        z-index: 2000 !important;
     }
-
-   
 
 </style>
 <div class="text-center mb-2">
     <span class="display-5 text-dark " id="title_course">
         @if (ViewBag.TitleCourse != null)
-        @ViewBag.TitleCourse</span>
+            @ViewBag.TitleCourse
 
-</div>
+        </span>
 
-<div class="row mb-3 mt-3" id="grid_course">
-    @foreach (var item in Model)
+    </div>
+
+    <div class="row mb-3 mt-3" id="grid_course">
+        @foreach (var item in Model)
     {
         <a href="#" class="col-md-2 col-6 mt-2">
-           
-                <div class="card text-dark" style="height: 75px;" onclick=" return CheckNullCourse(@item.ID,event)">
+            <div class="card text-dark" style="height: 75px;" onclick=" return CheckNullCourse(@item.ID,event)">
 
-                    <div class="card-body" style="padding: 0.5rem 0.5rem !important;">
+                <div class="card-body" style="padding: 0.5rem 0.5rem !important;">
                     <h5 class="card-title" style="font-size:15px ;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
                         @item.NameCourse
-                            <p class="card-text" style="font-size:10px ;float:right;" >
-
-                                <i class='bx bxs-book-alt text-info'></i> @item.NumberLesson
-                            </p>
-
-                        </h5>
-
-                        
-                        <p class="card-text" style="font-size:10px">
-                            @item.Instructor
+                        <p class="card-text" style="font-size:10px ;float:right;">
+                            <i class='bx bxs-book-alt text-info'></i> @item.NumberLesson
                         </p>
-                    </div>
+
+                    </h5>
+                    <p class="card-text" style="font-size:10px">
+                        @item.Instructor
+                    </p>
                 </div>
-            
+            </div>
         </a>
     }
 </div>

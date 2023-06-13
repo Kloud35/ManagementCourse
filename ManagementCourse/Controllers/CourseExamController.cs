@@ -150,11 +150,11 @@ namespace ManagementCourse.Controllers
         {
             var examResult = courseExamResultRepo.GetByID(resultID);
             var totalCorrect = examResult.TotalCorrect;
-            var totalIncorrect = examResult.TotalIncorrect;
+            var totalInCorrect = examResult.TotalIncorrect;
             if (examResult != null)
             {
                 bool isCompleted = examResult.PercentageCorrect != null;
-                return Json(new { isCompleted, totalCorrect, totalIncorrect });
+                return Json(new { isCompleted, totalCorrect, totalInCorrect });
             }
 
             return Json(new { isCompleted = false });

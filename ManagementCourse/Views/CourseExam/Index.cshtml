@@ -3,17 +3,7 @@
 
 
 @{
-    int temp = 0;
 
-    Random rand = new Random();
-
-    // Tạo một danh sách gồm 10 số ngẫu nhiên từ 1 đến 100
-    List<int> randomList = new List<int>();
-    for (int i = 0; i < 10; i++)
-    {
-        int num = rand.Next(1, 101); // tạo số ngẫu nhiên từ 1 đến 100
-        randomList.Add(num);
-    }
     var resultID = Model.CourseExamResult.Id;
 }
 
@@ -30,8 +20,6 @@
             <div class="container">
                 <div id="question-container">
                 </div>
-
-
                 <button class="btn btn-info" id="prev-button">Prev</button>
                 <button class="btn btn-info" id="next-button">Next</button>
                 <input value="" id="question-id-0" style="display: none;">
