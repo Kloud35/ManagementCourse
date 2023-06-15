@@ -1,18 +1,10 @@
-﻿@using ManagementCourse.Models.ViewModel;
-@model CourseExamViewModel
-
-
-@{
-
-    var resultID = Model.CourseExamResult.Id;
-}
-
+﻿@model ManagementCourse.Models.ViewModel.CourseExamViewModel
 
 <div class="row mb-3" style="color:#000000 !important">
     <div class="card col-md-8">
         <div class="card-header">
             <h3 class="card-title">
-                Bài thi khóa học xx @Model.CourseExam.NameExam
+                Bài thi khóa học @Model.CourseExam.NameExam
             </h3>
             <button class="btn btn-success" id="btn-submit-exam">Nộp</button>
         </div>
@@ -32,9 +24,10 @@
         <div id="question-navigation"></div>
     </div>
 </div>
+
 @section Scripts {
     <script>
-        var resultID = "@resultID";
+        var resultID = "@Model.CourseExamResult.Id";
         var courseExamID = "@Model.CourseExam.ID";
     </script>
 

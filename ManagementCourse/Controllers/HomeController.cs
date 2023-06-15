@@ -45,6 +45,11 @@ namespace ManagementCourse.Controllers
       
         public IActionResult Index(int id)
         {
+            if (HttpContext.Session.GetInt32("userid") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             var idDepartment = HttpContext.Session.GetInt32("department_id") ?? 0;
             var listCourse = _courseRepo.ListCourses(idDepartment, id,null);
             if (listCourse.Count < 1)

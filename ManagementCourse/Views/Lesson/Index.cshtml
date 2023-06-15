@@ -82,15 +82,11 @@
 
                             string check = item.Status == 1 ? "checked" : "";
 
-                            <li class="list-group-item text-dark d-flex justify-content-between align-items-between mt-1" id="group-li" style="@if(item.Id == Model.Id){
-                    @bglesson
-;}">
+                            <li class="list-group-item text-dark d-flex justify-content-between align-items-between" id="group-li" style="@if(item.Id == Model.Id){@bglesson;}">
 
                                 <a asp-controller="Lesson" asp-action="Index" asp-route-courseId="@item.CourseId" asp-route-lessionId="@item.Id">
                                     <span class="badge bg-info">@item.Stt</span>
-                                    <span class="text-dark" style="@if(item.Id == Model.Id){
-                            @bglesson
-;}">
+                                    <span class="text-dark" style="@if(item.Id == Model.Id){@bglesson;}">
                                         @item.LessonTitle
                                     </span>
                                 </a>
@@ -103,8 +99,9 @@
                         }
                     }
 
-                    <li class="list-group-item text-dark d-flex justify-content-between align-items-between mt-1" id="group-li">
-                        <a asp-controller="CourseExam" asp-action="Index" asp-route-courseId="@courseID" onclick="GetExamResult('@courseID', '@employeeID', '@courseExamID')">
+                    <li class="list-group-item text-dark d-flex justify-content-between align-items-between p-0" id="group-li">
+                        <a class="p-2" asp-controller="CourseExam" asp-action="Index" asp-route-courseId="@courseID" onclick="GetExamResult('@courseID', '@employeeID', '@courseExamID')"
+                           style="width:100%; margin-left:10px;">
                             <span class="text-ark">
                                 Bài kiểm tra
                             </span>

@@ -30,8 +30,10 @@ namespace ManagementCourse.Controllers
         }
         public IActionResult Index(int courseId)
         {
-
-
+            if (HttpContext.Session.GetInt32("userid") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
             CourseExam courseExam = _courseExamRepo.GetCourseExam(courseId);
 
             var employeeID = HttpContext.Session.GetInt32("employeeid");
@@ -58,22 +60,30 @@ namespace ManagementCourse.Controllers
 
         public JsonResult SaveQuestionAnswers([FromBody] List<CourseExamResultDetail> resultDetails)
         {
-            // Lấy CourseExamResultId và CourseQuestionId từ resultDetails
-            int courseExamResultId = resultDetails.FirstOrDefault()?.CourseExamResultId ?? 0;
-            int courseQuestionId = resultDetails.FirstOrDefault()?.CourseQuestionId ?? 0;
-
-            // Xóa các đáp án cũ trong cơ sở dữ liệu
-            var existingResultDetails = courseExamResultDetailRepo.GetAll()
-                .Where(p => p.CourseExamResultId == courseExamResultId && p.CourseQuestionId == courseQuestionId);
-            courseExamResultDetailRepo.RemoveRange(existingResultDetails);
-
-            // Thêm các đáp án mới
-            foreach (var resultDetail in resultDetails)
+            try
             {
-                courseExamResultDetailRepo.Create(resultDetail);
-            }
+                // Lấy CourseExamResultId và CourseQuestionId từ resultDetails
+                int courseExamResultId = resultDetails.FirstOrDefault()?.CourseExamResultId ?? 0;
+                int courseQuestionId = resultDetails.FirstOrDefault()?.CourseQuestionId ?? 0;
 
-            return Json(new { success = true });
+                // Xóa các đáp án cũ trong cơ sở dữ liệu    
+                var existingResultDetails = courseExamResultDetailRepo.GetAll().Where(p => p.CourseExamResultId == courseExamResultId && p.CourseQuestionId == courseQuestionId).ToList();
+
+                courseExamResultDetailRepo.RemoveRange(existingResultDetails);
+
+                // Thêm các đáp án mới
+                foreach (var resultDetail in resultDetails)
+                {
+                    courseExamResultDetailRepo.Create(resultDetail);
+                }
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         public JsonResult GetExamResultDetail(int resultID)
@@ -111,7 +121,7 @@ namespace ManagementCourse.Controllers
             foreach (var question in courseQuestions)
             {
                 var courseRightAnswers = courseRightAnswerRepository.GetAll().Where(p => p.CourseQuestionId == question.Id);
-                var examResultDetails = courseExamResultDetailRepo.GetAll().Where(p => p.CourseExamResultId == resultID && p.CourseQuestionId == question.Id);
+                var examResultDetails = courseExamResultDetailRepo.GetAll().Where(p => p.CourseExamResultId == resultID && p.CourseQuestionId == question.Id).ToList();
 
                 // Get the selected answer IDs from examResultDetails
                 var selectedAnswerIDs = examResultDetails.Select(detail => detail.CourseAnswerId).ToList();

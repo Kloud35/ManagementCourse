@@ -93,13 +93,13 @@ namespace ManagementCourse
             app.UseAuthorization();
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(@"C:\Users\admin\Desktop\Test")),
+                FileProvider = new PhysicalFileProvider(Configuration.GetValue<string>("FilePath")),
                 RequestPath = new PathString("/Test")
             });
 
             app.UseDirectoryBrowser(new DirectoryBrowserOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(@"C:\Users\admin\Desktop\Test")),
+                FileProvider = new PhysicalFileProvider(Configuration.GetValue<string>("FilePath")),
                 RequestPath = new PathString("/Test")
             });
 

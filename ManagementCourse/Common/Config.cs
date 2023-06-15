@@ -22,7 +22,7 @@ namespace ManagementCourse.Common
             if (_environment == 0)
             {
                
-                conn = @"server=DESKTOP-ABEN704\SQLEXPRESS;database=RTC;User Id = sa; Password=1;";
+                conn = @"server=DESKTOP-40H717B\SQLEXPRESS;database=RTCTest;User Id = sa; Password=123456a@;";
             }
             else
             {
