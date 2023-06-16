@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AspNetCoreHero.ToastNotification.Notyf;
+using ManagementCourse.Common;
 using ManagementCourse.IReposiory;
 using ManagementCourse.Models;
 using ManagementCourse.Models.ViewModel;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging.EventSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ManagementCourse.Controllers
 {
@@ -37,7 +39,7 @@ namespace ManagementCourse.Controllers
             var employeeID = HttpContext.Session.GetInt32("employeeid");
 
             var listLesson = courseLessonRepository.GetAll().Where(p => p.CourseId == courseId).ToList();
-            var listLessonHistory = courseLessonHistoryRepository.GetAll().Where(p=>p.EmployeeId == employeeID && p.Status == 1).ToList();
+            var listLessonHistory = courseLessonHistoryRepository.GetAll().Where(p => p.EmployeeId == employeeID && p.Status == 1).ToList();
             var lessonIds = listLesson.Select(l => l.Id).ToList();
             var matchingLessons = listLessonHistory.Where(h => lessonIds.Contains((int)h.LessonId)).ToList();
             bool hasMatchingLessons = matchingLessons.Count == listLesson.Count;
@@ -145,6 +147,8 @@ namespace ManagementCourse.Controllers
 
             courseExamResultRepo.Update(examResult);
             return Json(new { numCorrectAnswers, numIncorrectAnswers });
+
+
         }
         public IActionResult CheckExamCompletion(int resultID)
         {

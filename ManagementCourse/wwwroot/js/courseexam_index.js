@@ -142,7 +142,7 @@ $(document).ready(function () {
 
     //Add màu cho mấy cai ô
     function updateQuestionView() {
-        $('.question-number').removeClass('current-question');
+        
         $('.question-number[data-question-index="' + currentQuestionIndex + '"]').addClass('current-question');
         showQuestion(currentQuestionIndex);
     }
@@ -198,7 +198,10 @@ $(document).ready(function () {
                     for (var i = 0; i < previousAnswers.length; i++) {
                         var previousAnswer = previousAnswers[i];
                         $("input[name=question_" + questionIndex + "][value=" + previousAnswer.courseAnswerId + "]").prop("checked", true);
+                        updateQuestionView()
                     }
+                } else {
+                    $('.question-number').removeClass('current-question');
                 }
             },
             error: function (xhr, status, error) {
@@ -219,7 +222,7 @@ $(document).ready(function () {
             };
             answerData.push(answer);
         }
-
+        console.log(answerData);
         $.ajax({
             type: "POST",
             url: "/CourseExam/SaveQuestionAnswers",
