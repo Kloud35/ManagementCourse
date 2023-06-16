@@ -353,3 +353,7 @@ function CheckHistoryLess(event, id) {
         }
     })
 }
+
+function Retake(examResultId) {
+
+}

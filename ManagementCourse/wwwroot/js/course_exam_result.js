@@ -13,23 +13,38 @@ function GetExamResult() {
         type: "GET",
         dataType: 'json',
         contentType: 'application/json',
-        data: { courseId: courseId },
+        data: { courseExamResultId: courseExamResultID, courseId: courseId },
         success: function (response) {
 
             //console.log(response);
 
             var html = '';
             $.each(response, function (i, item) {
-                html += `<tr>
-                            <td class="p-1">${item.NameCourse}</td>
-                            <td class="p-1">${item.NameExam}</td>
-                            <td class="text-end p-1">${item.TotalQuestion}</td>
-                            <td class="text-end p-1">${item.TotalCorrect}</td>
-                            <td class="text-end p-1">${item.TotalIncorrect}</td>
-                            <td class="text-end p-1">${item.PercentageCorrect}</td>
-                            <td class="text-center p-1">${moment(item.CreatedDate).format("DD/MM/YYYY HH:mm")}</td>
-                        </tr>`;
-            })
+                if (item.IsSuccess) {
+                    html += `<tr>
+                                  <td class="justify-content-center p-1" style="color:blue;">Hoàn thành</td>
+                                  <td class="p-1">${item.NameCourse}</td>
+                                  <td class="p-1">${item.NameExam}</td>
+                                  <td class="text-end p-1">${item.TotalQuestion}</td>
+                                  <td class="text-end p-1">${item.TotalCorrect}</td>
+                                  <td class="text-end p-1">${item.TotalIncorrect}</td>
+                                  <td class="text-end p-1">${item.PercentageCorrect}</td>
+                                  <td class="text-center p-1">${moment(item.CreatedDate).format("DD/MM/YYYY HH:mm")}</td>
+                            </tr>`;
+                } else {
+                    html += `<tr>
+                                  <td class="p-1"><a href="#" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Làm lại" onclick="onRetake(${item.ID})">Làm lại</a></td>
+                                  <td class="p-1">${item.NameCourse}</td>
+                                  <td class="p-1">${item.NameExam}</td>
+                                  <td class="text-end p-1">${item.TotalQuestion}</td>
+                                  <td class="text-end p-1">${item.TotalCorrect}</td>
+                                  <td class="text-end p-1">${item.TotalIncorrect}</td>
+                                  <td class="text-end p-1">${item.PercentageCorrect}</td>
+                                  <td class="text-center p-1">${moment(item.CreatedDate).format("DD/MM/YYYY HH:mm")}</td>
+                            </tr>`;
+                }
+            });
+
 
             $('#tbody_exam_result').html(html);
         },
@@ -61,6 +76,7 @@ function onStart(isSuccess, examResultId) {
 
                     $('#modal_exam_test').modal('show');
                     GetExamQuestion(courseId, parseInt(response));
+                    
 
                 } else {
                     alert("Xảy ra lỗi khi tạo bài thi!");
@@ -79,6 +95,7 @@ function onStart(isSuccess, examResultId) {
 
 //Get danh sách câu hỏi
 function GetExamQuestion(courseId, courseExamResultID) {
+    console.log(courseId, courseExamResultID);
     $.ajax({
         url: "/CourseExamResult/GetExamQuestion",
         type: "GET",
@@ -89,9 +106,16 @@ function GetExamQuestion(courseId, courseExamResultID) {
             courseExamResultID: courseExamResultID
         },
         success: function (response) {
-            examquestions = response;
-
+            examquestions = response.sort(() => Math.random() - 0.5);
+            $.each(examquestions, function (i, item) {
+                item.ExamAnswers.sort(() => Math.random() - 0.5);
+            })
+            console.log(examquestions);
             addNumberQuestion(examquestions);
+            var item = examquestions[0];
+
+            $(`span[id="${item.ID}"]`).addClass('current-question');
+            addContentQuestion(item);
         },
         error: function (error) {
             alert(error.responseText);
@@ -99,43 +123,25 @@ function GetExamQuestion(courseId, courseExamResultID) {
     });
 }
 
-//Sự kiện khi click next
+
+// Sự kiện khi click next
 function onNext() {
     AddResultDetail();
-
-    $('.current-question').removeClass('current-question');
-
-    if (examquestions.length > 0) {
-        
-        var item = examquestions[indexQuestion];
-
-        addContentQuestion(item);
-
-        $(`span[id="${item.ID}"]`).addClass('current-question');
-
-        if (indexQuestion < examquestions.length - 1) {
-            indexQuestion++;
-        }
-    }
 }
 
-//sự kiện khi click prev
+// Sự kiện khi click prev
 function onPrevios() {
     $('.current-question').removeClass('current-question');
-
-    if (examquestions.length > 0) {
-        
-
-        var item = examquestions[indexQuestion];
-
-        addContentQuestion(item);
-        $(`span[id="${item.ID}"]`).addClass('current-question');
-
-        if (indexQuestion > 0) {
-            indexQuestion--;
-        }
+    //Sửa lại điều kiện check
+    if (examquestions.length > 0 && indexQuestion > 0) {
+        indexQuestion--;
     }
+
+    var item = examquestions[indexQuestion];
+    addContentQuestion(item);
+    $(`span[id="${item.ID}"]`).addClass('current-question');
 }
+
 
 //Sự kiện khi click chọn câu hỏi
 function onChosenQuestion(event, id) {
@@ -186,7 +192,6 @@ function AddResultDetail() {
         contentType: 'application/json',
         data: JSON.stringify(answers),
         success: function (response) {
-            console.log('insert detail:',response);
 
             //Update arr examquestions
             var item = examquestions.find(x => x.ID == response.Item1);
@@ -202,8 +207,17 @@ function AddResultDetail() {
                 addNumberQuestion(examquestions);
             }
 
-            
+            $('.current-question').removeClass('current-question');
+            //Sửa lại điều kiện check
+            if (examquestions.length > 0 && indexQuestion < examquestions.length - 1) {
+                indexQuestion++;
+            }
+
+            var item = examquestions[indexQuestion];
+            addContentQuestion(item);
+            $(`span[id="${item.ID}"]`).addClass('current-question');
         },
+
         error: function (error) {
             alert(error);
         }
@@ -244,7 +258,7 @@ function addNumberQuestion(data) {
 
         var classSuccess = item.QuestionChosenID == item.ID ? 'question-success' : '';
 
-        html += `<span class="question-number m-1 border border-dark ${classSuccess}" id="${item.ID}"
+        html += `<span class="question-number m-1 border border-dark ${classSuccess} " id="${item.ID}"
                             onclick="return onChosenQuestion(event,${item.ID});">${key + 1}</span>`;
     })
 
@@ -259,4 +273,19 @@ function addNumberQuestion(data) {
         border: "1px solid #000",
         cursor: "pointer"
     });
+}
+function onSubmit() {
+    var confirmMessage = confirm("Bạn chắn chắn muốn nộp bài????");
+    if (confirmMessage) {
+        AddResultDetail();
+
+        GetExamResult();
+        location.reload();
+    }
+}
+
+function onRetake(examResultId) {
+    $('#modal_exam_test').modal('show');
+    GetExamQuestion(courseId, examResultId);
+
 }

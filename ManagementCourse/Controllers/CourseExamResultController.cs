@@ -36,12 +36,12 @@ namespace ManagementCourse.Controllers
             return View();
         }
 
-        public JsonResult GetExamResult(int courseId)
+        public JsonResult GetExamResult(int courseExamResultId,int courseId)
         {
             int employeeId = (int)HttpContext.Session.GetInt32("employeeid");
             List<CourseExamResultDTO> listExamResult = SQLHelper<CourseExamResultDTO>.ProcedureToList("spGetCourseExamResult",
                                                                                             new string[] { "@CourseExamResultID", "@CourseID", "@EmployeeID" },
-                                                                                            new object[] { 0, courseId, employeeId });
+                                                                                            new object[] { courseExamResultId, courseId, employeeId });
             return Json(listExamResult, new System.Text.Json.JsonSerializerOptions());
         }
 
@@ -127,5 +127,7 @@ namespace ManagementCourse.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        
+
     }
 }

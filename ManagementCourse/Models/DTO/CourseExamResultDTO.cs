@@ -17,7 +17,7 @@ namespace ManagementCourse.Models.DTO
         public int TotalIncorrect { get; set; }
         public decimal PercentageCorrect { get; set; }
         public DateTime CreatedDate { get; set; }
-
+        public bool IsSuccess { get; set; }
 
     }
 }

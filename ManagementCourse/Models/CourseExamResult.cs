@@ -17,5 +17,6 @@ namespace ManagementCourse.Models
         public int? TotalCorrect { get; set; }
         public int? TotalIncorrect { get; set; }
         public decimal? PercentageCorrect { get; set; }
+        public bool? IsSuccess { get; set; }
     }
 }
