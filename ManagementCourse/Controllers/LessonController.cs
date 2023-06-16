@@ -40,6 +40,11 @@ namespace ManagementCourse.Controllers
 
         public IActionResult Index(int courseId, int lessionId)
         {
+            if (HttpContext.Session.GetInt32("userid") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             try
             {
                 string[] nameFileShow;
@@ -203,6 +208,7 @@ namespace ManagementCourse.Controllers
                     UpdatedDate = DateTime.Now
                 };
                 var obj = _cousrseExamResult.Create(result);
+
                 jsonResult = Json(obj, new System.Text.Json.JsonSerializerOptions());
             }
 

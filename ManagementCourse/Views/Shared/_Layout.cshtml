@@ -51,7 +51,7 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="~/assets/js/config.js"></script>
-    
+
     <script src="~/lib/Jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -62,7 +62,7 @@
         <div class="layout-container">
             <!-- Menu -->
             @await Component.InvokeAsync("Menu")
-           
+
             <!-- / Menu -->
             <!-- Layout container -->
             <div class="layout-page">
@@ -84,10 +84,10 @@
                                 <input type="text"
                                        class="form-control border-0 shadow-none"
                                        placeholder="Search..."
-                                       aria-label="Search..." id="value_search"/>
+                                       aria-label="Search..." id="value_search" />
                             </div>
                         </div>
-                     
+
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
                             <span class="fw-semibold d-block">Xin chào  @Context.Session.GetString("fullname")</span>
@@ -117,7 +117,7 @@
                                     <li>
                                         <div class="dropdown-divider"></div>
                                     </li>
-                                 
+
                                     <li>
                                         <a class="dropdown-item" asp-controller="Home" asp-action="Logout">
                                             <i class="bx bx-power-off me-2"></i>
@@ -136,7 +136,7 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                           @RenderBody()
+                        @RenderBody()
                     </div>
                     <!-- / Content -->
                     <!-- Footer -->
@@ -183,11 +183,13 @@
     <script src="~/assets/js/main.js"></script>
 
     <!-- Page JS -->
-   
+
     <script src="~/assets/js/dashboards-analytics.js"></script>
     <script src="~/js/common.js" asp-append-version="true"></script>
     <script src="~/js/home.js" asp-append-version="true"></script>
-    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
     @await Component.InvokeAsync("Notyf")
     @await RenderSectionAsync("Scripts", required: false)
 </body>

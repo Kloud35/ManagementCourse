@@ -1,5 +1,126 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿
+<div class="mb-2">
+    <h4 class="fw-bold mb-2">Bài thi khóa học @ViewBag.CourseName</h4>
+    <button class="btn btn-primary btn-sm"
+            onclick="return onStart(false, 0);">
+        <i class='bx bx-plus-medical'></i> Làm bài thi
+    </button>
+</div>
+
+<div class="card">
+    <div class="card-body p-2">
+        <div class="table-responsive text-nowrap">
+            <table class="table table-hover table-bordered">
+                <thead class="bg-info text-center">
+                    <tr>
+                        <th class="text-white">Khoá học</th>
+                        <th class="text-white">Đề thi</th>
+                        <th class="text-white">Số câu hỏi</th>
+                        <th class="text-white">Số câu đúng</th>
+                        <th class="text-white">Số câu sai</th>
+                        <th class="text-white">Điểm</th>
+                        <th class="text-white">Ngày làm bài</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0" id="tbody_exam_result">
+                    <tr>
+                        <td class="p-1">Khó học</td>
+                        <td class="p-1">Đề</td>
+                        <td class="text-end p-1">Số câu hỏi</td>
+                        <td class="text-end p-1">Đúng</td>
+                        <td class="text-end p-1">sai</td>
+                        <td class="text-end p-1">Điểm</td>
+                        <td class="text-end p-1">Ngày</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal_exam_test" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog" style="max-width:1400px">
+        <div class="modal-content" style="background-color: #eceef1;">
+            <div class="modal-header p-2">
+                <h5 class="modal-title fs-4 text-uppercase" id="titlePDF">Bài thi khóa học @ViewBag.CourseName</h5>
+            </div>
+            <div class="modal-body p-2">
+                <div class="row">
+                    <div class="col-md-9 mb-2">
+                        <div class="card h-100">
+                            <div class="card-body py-1">
+                                <div id="exam_question_content">
+                                    @*<input type="hidden" id="course_exam_question_id" value="0" />
+                                    <p>
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                        Eligendi, consequatur libero ut soluta nesciunt molestias,
+                                        obcaecati ipsum atque accusantium nisi optio eveniet quae saepe voluptates magnam placeat modi possimus quasi.
+                                    </p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="7">
+                                        <label class="form-check-label" for="7">
+                                            a
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="8">
+                                        <label class="form-check-label" for="8">
+                                            b
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="9">
+                                        <label class="form-check-label" for="9">
+                                            c
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="10">
+                                        <label class="form-check-label" for="10">
+                                            d
+                                        </label>
+                                    </div>*@
+                                </div>
+                            </div>
+
+                            <div class="card-footer py-1 border-top row m-0">
+                                <div class="col-md-6 p-0">
+                                    <button class="btn btn-info btn-sm" onclick="return onPrevios();">Prev</button>
+                                    <button class="btn btn-primary btn-sm" id="btn_next_question" onclick="return onNext();">Next</button>
+                                </div>
+                                <div class="col-md-6 p-0 d-flex justify-content-end">
+                                    <button class="btn btn-success btn-sm">Nộp bài</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div id="exam_question_navigation">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var courseId = @ViewBag.CourseId;
+        var courseExamId = @ViewBag.CourseExamID;
+    </script>
 }
+
+<script src="~/js/course_exam_result.js"></script>

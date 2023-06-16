@@ -45,6 +45,11 @@ namespace ManagementCourse.Controllers
       
         public IActionResult Index(int id)
         {
+            if (HttpContext.Session.GetInt32("userid") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             var idDepartment = HttpContext.Session.GetInt32("department_id") ?? 0;
             var listCourse = _courseRepo.ListCourses(idDepartment, id,null);
             if (listCourse.Count < 1)
@@ -77,7 +82,7 @@ namespace ManagementCourse.Controllers
                 //int isAdmin = Convert.ToInt32(TextUtils.ToInt(user.Rows[0]["IsAdmin"]));
                 HttpContext.Session.SetInt32("userid", TextUtils.ToInt(user.Rows[0]["ID"]));
                 HttpContext.Session.SetInt32("employeeid", TextUtils.ToInt(user.Rows[0]["EmployeeID"]));
-                //HttpContext.Session.SetString("login_name", TextUtils.ToString(user.Rows[0]["LoginName"]));
+                HttpContext.Session.SetString("loginname", TextUtils.ToString(user.Rows[0]["LoginName"]));
                 HttpContext.Session.SetString("fullname", TextUtils.ToString(user.Rows[0]["FullName"]));
                 //HttpContext.Session.SetInt32("isAdmin", isAdmin);
                 //HttpContext.Session.SetInt32("isAdminSale", TextUtils.ToInt(user.Rows[0]["IsAdminSale"]));

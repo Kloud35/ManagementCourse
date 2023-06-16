@@ -1,40 +1,44 @@
-﻿@using ManagementCourse.Models.ViewModel;
-@model CourseExamViewModel
+﻿@model ManagementCourse.Models.ViewModel.CourseExamViewModel
 
 
-@{
-
-    var resultID = Model.CourseExamResult.Id;
-}
+<h4 class="fw-bold">Bài thi khóa học @Model.CourseExam.NameExam</h4>
 
 
-<div class="row mb-3" style="color:#000000 !important">
-    <div class="card col-md-8">
-        <div class="card-header">
-            <h3 class="card-title">
-                Bài thi khóa học xx @Model.CourseExam.NameExam
-            </h3>
-            <button class="btn btn-success" id="btn-submit-exam">Nộp</button>
-        </div>
-        <div class="card-body">
-            <div class="container">
+<div class="row">
+    <div class="col-md-8 mb-3">
+        <div class="card h-100">
+            <div class="card-body py-1">
                 <div id="question-container">
-                </div>
-                <button class="btn btn-info" id="prev-button">Prev</button>
-                <button class="btn btn-info" id="next-button">Next</button>
-                <input value="" id="question-id-0" style="display: none;">
 
+                </div>
+                <input value="" id="question-id-0" style="display: none;">
+            </div>
+            <div class="card-footer py-1 border-top row m-0">
+                <div class="col-md-6 p-0">
+                    <button class="btn btn-info btn-sm" id="prev-button">Prev</button>
+                    <button class="btn btn-primary btn-sm" id="next-button">Next</button>
+                </div>
+                <div class="col-md-6 p-0 d-flex justify-content-end">
+                    <button class="btn btn-success btn-sm" id="btn-submit-exam">Nộp bài</button>
+                </div>
+                
             </div>
         </div>
-
     </div>
-    <div class="card col-md-4">
-        <div id="question-navigation"></div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <div id="question-navigation">
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 @section Scripts {
     <script>
-        var resultID = "@resultID";
+        var resultID = "@Model.CourseExamResult.Id";
         var courseExamID = "@Model.CourseExam.ID";
     </script>
 

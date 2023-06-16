@@ -83,7 +83,7 @@ $(document).ready(function () {
                                     </div><br>`;
                     });
 
-                    questionHtml += '<hr/></div>';
+                    //questionHtml += '<hr/></div>';
 
                     questionContainer.append(questionHtml);
                 });
@@ -97,7 +97,7 @@ $(document).ready(function () {
                 questionNavigation.empty();
 
                 for (var i = 0; i < response.courseQuestion.length; i++) {
-                    var questionNumberHtml = `<span class="question-number" data-question-index="${i}">${i + 1}</span>`;
+                    var questionNumberHtml = `<span class="question-number m-1 border border-dark" data-question-index="${i}">${i + 1}</span>`;
                     questionNavigation.append(questionNumberHtml);
                 }
                 $('.question-number[data-question-index="0"]').addClass('current-question');
@@ -109,7 +109,6 @@ $(document).ready(function () {
                     textAlign: "center",
                     lineHeight: "30px",
                     border: "1px solid #000",
-                    marginRight: "5px",
                     cursor: "pointer"
                 });
 
@@ -133,6 +132,7 @@ $(document).ready(function () {
             }
         });
     }
+
     //Ẩn hiện câu hỏi
     function showQuestion(questionIndex) {
         $('.question').hide();
@@ -176,6 +176,7 @@ $(document).ready(function () {
             updateQuestionView();
         }
     });
+
     //Save 
     function saveSelectedAnswers(questionIndex) {
         var selectedAnswers = $("input[name=question_" + questionIndex + "]:checked").map(function () {
@@ -251,6 +252,7 @@ $(document).ready(function () {
         } else {
             alert('Bạn chưa chọn đáp án cho tất cả các câu hỏi!');
         }
+
         if (isValid) {
             saveSelectedAnswers(currentQuestionIndex);
             $.ajax({
@@ -274,7 +276,7 @@ $(document).ready(function () {
                                           </div>
                                       </div>
                                     <button class="btn btn-primary mt-3" id="btn-restart-exam">Làm lại bài thi</button>`;
-                    $(".row.mb-3").html(resultHtml);
+                    $(".row").html(resultHtml);
 
                     console.log(response);
                 },
