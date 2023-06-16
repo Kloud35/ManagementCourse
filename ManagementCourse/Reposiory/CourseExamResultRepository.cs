@@ -5,13 +5,14 @@ using System;
 
 namespace ManagementCourse.Reposiory
 {
-    public class CourseExamResultRepository
+    public class CourseExamResultRepository:GenericRepository<CourseExamResult>
     {
         RTCContext _context = new RTCContext();
         public CourseExamResultRepository()
         {
         }
-        public int Create(CourseExamResult examResult)
+
+        public int CreateExam(CourseExamResult examResult)
         {
             CourseExamResult result = new CourseExamResult()
             {

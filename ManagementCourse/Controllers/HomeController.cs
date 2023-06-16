@@ -82,7 +82,7 @@ namespace ManagementCourse.Controllers
                 //int isAdmin = Convert.ToInt32(TextUtils.ToInt(user.Rows[0]["IsAdmin"]));
                 HttpContext.Session.SetInt32("userid", TextUtils.ToInt(user.Rows[0]["ID"]));
                 HttpContext.Session.SetInt32("employeeid", TextUtils.ToInt(user.Rows[0]["EmployeeID"]));
-                //HttpContext.Session.SetString("login_name", TextUtils.ToString(user.Rows[0]["LoginName"]));
+                HttpContext.Session.SetString("loginname", TextUtils.ToString(user.Rows[0]["LoginName"]));
                 HttpContext.Session.SetString("fullname", TextUtils.ToString(user.Rows[0]["FullName"]));
                 //HttpContext.Session.SetInt32("isAdmin", isAdmin);
                 //HttpContext.Session.SetInt32("isAdminSale", TextUtils.ToInt(user.Rows[0]["IsAdminSale"]));

@@ -100,12 +100,20 @@ namespace ManagementCourse.Controllers
 
         public IActionResult GetQuestions(int courseExamId)
         {
-            var questions = new CourseQuestionViewModel()
+            try
             {
-                CourseQuestion = _courseExamRepo.GetCourseQuestion(courseExamId).OrderBy(p => p.Stt).ToList(),
-                CourseAnswer = _courseExamRepo.GetCourseAnswer()
-            };
-            return Json(questions);
+                var questions = new CourseQuestionViewModel()
+                {
+                    CourseQuestion = _courseExamRepo.GetCourseQuestion(courseExamId).OrderBy(p => p.Stt).ToList(),
+                    CourseAnswer = _courseExamRepo.GetCourseAnswer()
+                };
+                return Json(questions);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         public IActionResult SubmitExam(int resultID)

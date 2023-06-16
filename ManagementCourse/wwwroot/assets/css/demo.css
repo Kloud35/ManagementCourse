@@ -105,6 +105,13 @@
   text-align: center;
   margin-top: 1rem;
 }
+
 .current-question {
-    background-color: red;
+    background-color: #ffab00c2 !important;
+    color: #000;
+}
+
+.question-success {
+    background-color: #07c673;
+    color:#000;
 }

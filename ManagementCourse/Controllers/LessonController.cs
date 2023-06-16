@@ -208,6 +208,7 @@ namespace ManagementCourse.Controllers
                     UpdatedDate = DateTime.Now
                 };
                 var obj = _cousrseExamResult.Create(result);
+
                 jsonResult = Json(obj, new System.Text.Json.JsonSerializerOptions());
             }
 
